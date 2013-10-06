@@ -31,6 +31,7 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 	 *
 	 */
 	public function initializeAction() {
+		//@todo move reading into menuitems repository
 		$this->items = $this->configurationManager->getConfiguration(
 			\TYPO3\FLOW\Configuration\ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
 			'KayStrobach.Menu.Menus.' . $this->widgetConfiguration['menu'] . '.Items'
