@@ -13,11 +13,11 @@ namespace KayStrobach\Menu\ViewHelpers\Widget;
 
 use TYPO3\Flow\Annotations as Flow;
 
-class PaginateViewHelper extends \TYPO3\Fluid\Core\Widget\AbstractWidgetViewHelper {
+class MenuViewHelper extends \TYPO3\Fluid\Core\Widget\AbstractWidgetViewHelper {
 
 	/**
 	 * @Flow\Inject
-	 * @var \KayStrobach\Menu\ViewHelpers\Controller\PaginateController
+	 * @var \KayStrobach\Menu\ViewHelpers\Widget\Controller\MenuController
 	 */
 	protected $controller;
 
