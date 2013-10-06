@@ -1,0 +1,43 @@
+<ul class="nav navbar-nav">
+	<f:for each="{items}" as="item">
+		<f:if condition="{item.section}">
+			<f:then>
+				<li class="dropdown">
+					<f:if condition="{item.items}">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<f:if condition="{item.iconclass}">
+								<span class="{item.iconclass}"></span>
+							</f:if>
+							{item.label}
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<f:for each="{item.items}" as="subitem">
+								<li>
+									<f:render partial="Item" arguments="{item: subitem}"/>
+								</li>
+							</f:for>
+						</ul>
+					</f:if>
+				</li>
+			</f:then>
+			<f:else>
+				<li>
+					<f:render partial="Item" arguments="{item: item}"/>
+				</li>
+				<f:if condition="{item.items}">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<f:for each="{item.items}" as="subitem">
+								<li>
+									<f:render partial="Item" arguments="{item: subitem}"/>
+								</li>
+							</f:for>
+						</ul>
+					</li>
+				</f:if>
+			</f:else>
+		</f:if>
+	</f:for>
+</ul>
