@@ -28,6 +28,10 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 	protected $settings = array();
 
 	/**
+	 * @var null|array
+	 */
+	protected $debug = NULL;
+	/**
 	 *
 	 */
 	public function initializeAction() {
@@ -40,28 +44,41 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 			\TYPO3\FLOW\Configuration\ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
 			'KayStrobach.Menu.Menus.' . $this->widgetConfiguration['menu'] . '.Configuration'
 		);
+		if($this->widgetConfiguration['debug']) {
+			$this->debug = $this->configurationManager->getConfiguration(
+				\TYPO3\FLOW\Configuration\ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
+				'KayStrobach.Menu.Menus'
+			);
+		}
 	}
 
 	public function indexAction() {
 		$this->aggregateNodes($this->items);
 		$this->view->assign('settings', $this->settings);
 		$this->view->assign('items',    $this->items);
+		if($this->widgetConfiguration['debug']) {
+			$this->view->assign('debug', print_r($this->debug, TRUE));
+		}
 	}
 
 	protected function aggregateNodes(&$items) {
-		foreach($items as $item) {
-			if(array_key_exists('aggregator', $item)) {
-				$object = $this->objectManager->get($item['aggregator']);
-				if(is_a($object, '\\KayStrobach\\Menu\\Domain\\Model\\MenuItemInterface')) {
-					$item['items'] = $object->getItems();
-				} else {
-					throw new \Exception('Sry, but "' . get_class($object) . '" is does not implement "\\KayStrobach\\Menu\\Domain\\Model\\MenuItemInterface", this is mandatory for menu aggregators.');
+		if(is_array($items)) {
+			foreach($items as $item) {
+				if(array_key_exists('aggregator', $item)) {
+					$object = $this->objectManager->get($item['aggregator']);
+					if(is_a($object, '\\KayStrobach\\Menu\\Domain\\Model\\MenuItemInterface')) {
+						$item['items'] = $object->getItems();
+					} else {
+						throw new \Exception('Sry, but "' . get_class($object) . '" is does not implement "\\KayStrobach\\Menu\\Domain\\Model\\MenuItemInterface", this is mandatory for menu aggregators.');
+					}
+				}
+				if(array_key_exists('items', $item)) {
+					$this->aggregateNodes($item['items']);
 				}
 			}
-			if(array_key_exists('items', $item)) {
-				$this->aggregateNodes($item['items']);
-			}
+			ksort($items);
+		} else {
+			$items = array();
 		}
-		ksort($items);
 	}
 }
