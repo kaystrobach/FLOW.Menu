@@ -61,6 +61,10 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 		}
 	}
 
+	/**
+	 * @param array $items
+	 * @throws \Exception
+	 */
 	protected function aggregateNodes(&$items) {
 		if(is_array($items)) {
 			foreach($items as $item) {
