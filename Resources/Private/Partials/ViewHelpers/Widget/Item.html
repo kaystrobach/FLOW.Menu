@@ -4,7 +4,14 @@
 			<f:if condition="{item.iconclass}">
 				<span class="{item.iconclass}"></span>
 			</f:if>
-			{item.label}
+			<f:if condition="{item.package}">
+				<f:then>
+					<f:translate package="{item.package}">{item.label}</f:translate>
+				</f:then>
+				<f:else>
+					{item.label}
+				</f:else>
+			</f:if>
 		</f:link.action>
 	</f:then>
 	<f:else>
@@ -12,7 +19,14 @@
 			<f:if condition="{item.iconclass}">
 				<span class="{item.iconclass}"></span>
 			</f:if>
-			{item.label}
+			<f:if condition="{item.package}">
+				<f:then>
+					<f:translate package="{item.package}">{item.label}</f:translate>
+				</f:then>
+				<f:else>
+					{item.label}
+				</f:else>
+			</f:if>
 		</a>
 	</f:else>
 </f:if>
