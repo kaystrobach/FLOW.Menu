@@ -10,7 +10,7 @@
 							</f:if>
 							<f:if condition="{item.package}">
 								<f:then>
-									<f:translate package="{item.package}">{item.label}</f:translate>
+									<f:translate id="{item.labelId}" package="{item.package}">{item.label}</f:translate>
 								</f:then>
 								<f:else>
 									{item.label}
