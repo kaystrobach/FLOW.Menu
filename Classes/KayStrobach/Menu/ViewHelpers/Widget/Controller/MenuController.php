@@ -3,8 +3,15 @@
 namespace KayStrobach\Menu\ViewHelpers\Widget\Controller;
 
 use TYPO3\Flow\Annotations as Flow;
+use TYPO3\Flow\Aop\JoinPoint;
 
 class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
+	/**
+	 * @var \TYPO3\Flow\Log\SystemLoggerInterface
+	 * @Flow\Inject
+	 */
+	protected $logger;
+
 	/**
 	 * @var \TYPO3\Flow\Configuration\ConfigurationManager
 	 * @FLOW\Inject
@@ -12,10 +19,34 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 	public $configurationManager;
 
 	/**
-	 * @FLOW\Inject
-	 * @var \TYPO3\Flow\Object\ObjectManager
+	 * @Flow\Inject
+	 * @var \TYPO3\Flow\Security\Authorization\AccessDecisionVoterManager
+	 */
+	protected $accessDecisionVoterManager;
+
+	/**
+	 * @Flow\Inject
+	 * @var \TYPO3\Flow\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
+
+	/**
+	 * @Flow\Inject
+	 * @var \TYPO3\Flow\Package\PackageManagerInterface
+	 */
+	protected $packageManager;
+
+	/**
+	 * @Flow\Inject
+	 * @var \TYPO3\Flow\Security\Context
+	 */
+	protected $securityContext;
+
+	/**
+	 * @Flow\Inject
+	 * @var \TYPO3\Flow\Object\Proxy\Compiler
+	 */
+	protected $compiler;
 
 	/**
 	 * stores the items
@@ -54,6 +85,7 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 
 	public function indexAction() {
 		$this->aggregateNodes($this->items);
+		$this->removeNotAuthorizedNodes($this->items);
 		$this->view->assign('settings', $this->settings);
 		$this->view->assign('items',    $this->items);
 		if($this->widgetConfiguration['debug']) {
@@ -81,6 +113,41 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 				}
 			}
 			ksort($items);
+		} else {
+			$items = array();
+		}
+	}
+
+	protected function removeNotAuthorizedNodes($items) {
+		if(is_array($items)) {
+			foreach($items as $key=>$item) {
+				if(array_key_exists('action', $item)) {
+					$nameSpace = $this->packageManager->getPackage($item['package'])->getNamespace();
+					$className = $nameSpace . '\\Controller\\' . $item['controller'] . 'Controller';
+
+					$this->logger->log('Build proxy: ' . $className . ' ... ', LOG_DEBUG);
+					try {
+						#$roles = $this->securityContext->getRoles();
+						$this->accessDecisionVoterManager->decideOnJoinPoint(
+							new JoinPoint(
+								$this->objectManager->get($className),
+								$className . '_Original',
+								$item['action'],
+								array()
+							)
+						);
+						$this->logger('success for access decision voter ' . $className, LOG_DEBUG);
+					} catch(\TYPO3\Flow\Security\Exception\AccessDeniedException $e) {
+						$this->logger->log('Access denied: ' . $className . ' ... ', LOG_DEBUG);
+						unset($items[$key]);
+					}
+				}
+				if(@is_array($item)) {
+					if(array_key_exists('items', $item)) {
+						$this->removeNotAuthorizedNodes($item['items']);
+					}
+				}
+			}
 		} else {
 			$items = array();
 		}
