@@ -128,7 +128,7 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 					$nameSpace = $this->packageManager->getPackage($item['package'])->getNamespace();
 					$className = $nameSpace . '\\Controller\\' . $item['controller'] . 'Controller';
 					$item['allowed'] = TRUE;
-					try {
+					/*try {
 						#$roles = $this->securityContext->getRoles();
 						$this->accessDecisionVoterManager->decideOnJoinPoint(
 							new JoinPoint(
@@ -142,7 +142,7 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 					} catch(\TYPO3\Flow\Security\Exception\AccessDeniedException $e) {
 						$this->logger->log('Access denied: ' . $className . ' ... ' . $e->getMessage(), LOG_DEBUG);
 						$item['allowed'] = FALSE;
-					}
+					}*/
 				}
 				if(@is_array($item)) {
 					if(array_key_exists('items', $item)) {
