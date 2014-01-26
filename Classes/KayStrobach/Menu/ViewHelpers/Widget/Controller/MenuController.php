@@ -118,14 +118,16 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 		}
 	}
 
-	protected function removeNotAuthorizedNodes($items) {
+	/**
+	 * @param array $items
+	 */
+	protected function removeNotAuthorizedNodes(&$items) {
 		if(is_array($items)) {
-			foreach($items as $key=>$item) {
+			foreach($items as &$item) {
 				if(array_key_exists('action', $item)) {
 					$nameSpace = $this->packageManager->getPackage($item['package'])->getNamespace();
 					$className = $nameSpace . '\\Controller\\' . $item['controller'] . 'Controller';
-
-					$this->logger->log('Build proxy: ' . $className . ' ... ', LOG_DEBUG);
+					$item['allowed'] = TRUE;
 					try {
 						#$roles = $this->securityContext->getRoles();
 						$this->accessDecisionVoterManager->decideOnJoinPoint(
@@ -138,8 +140,8 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 						);
 						$this->logger('success for access decision voter ' . $className, LOG_DEBUG);
 					} catch(\TYPO3\Flow\Security\Exception\AccessDeniedException $e) {
-						$this->logger->log('Access denied: ' . $className . ' ... ', LOG_DEBUG);
-						unset($items[$key]);
+						$this->logger->log('Access denied: ' . $className . ' ... ' . $e->getMessage(), LOG_DEBUG);
+						$item['allowed'] = FALSE;
 					}
 				}
 				if(@is_array($item)) {
