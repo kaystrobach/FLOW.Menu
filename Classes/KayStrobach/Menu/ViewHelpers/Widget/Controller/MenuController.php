@@ -4,6 +4,8 @@ namespace KayStrobach\Menu\ViewHelpers\Widget\Controller;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Aop\JoinPoint;
+use TYPO3\Flow\Security\Exception\AccessDeniedException;
+
 
 class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 	/**
@@ -26,27 +28,15 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 
 	/**
 	 * @Flow\Inject
+	 * @var \TYPO3\Flow\Mvc\Routing\RouterInterface
+	 */
+	protected $router;
+
+	/**
+	 * @Flow\Inject
 	 * @var \TYPO3\Flow\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
-
-	/**
-	 * @Flow\Inject
-	 * @var \TYPO3\Flow\Package\PackageManagerInterface
-	 */
-	protected $packageManager;
-
-	/**
-	 * @Flow\Inject
-	 * @var \TYPO3\Flow\Security\Context
-	 */
-	protected $securityContext;
-
-	/**
-	 * @Flow\Inject
-	 * @var \TYPO3\Flow\Object\Proxy\Compiler
-	 */
-	protected $compiler;
 
 	/**
 	 * stores the items
@@ -97,6 +87,7 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 
 	public function indexAction() {
 		$this->aggregateNodes($this->items);
+		$this->items = $this->getAllowedNodesAndNonEmptySections($this->items);
 		$this->view->assign('settings', $this->settings);
 		$this->view->assign('items',    $this->items);
 		if($this->widgetConfiguration['debug']) {
@@ -129,4 +120,50 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 		}
 	}
 
+	/**
+	 * @param array $items
+	 * @return array
+	 */
+	protected function getAllowedNodesAndNonEmptySections($items) {
+		$thisLevelItems = array();
+		foreach($items as $item) {
+			if(array_key_exists('items', $item)) {
+				$subItems = $this->getAllowedNodesAndNonEmptySections($item['items']);
+				if((array_key_exists('section', $item)) && ($item['section'] === 1) && (count($subItems) > 0)) {
+					$thisLevelItems[] = $item;
+				}
+			} elseif (array_key_exists('url', $item)) {
+				$thisLevelItems[] = $item;
+			} elseif((array_key_exists('package', $item)) && (array_key_exists('controller', $item)) && (array_key_exists('action', $item))) {
+				if($this->hasAccessToAction($item['package'], NULL, $item['controller'], $item['action'])) {
+					$thisLevelItems[] = $item;
+				}
+			}
+		}
+		return $thisLevelItems;
+	}
+	/**
+	 * Check if we currently have access to the given resource
+	 *
+	 * @param $packageKey
+	 * @param $subpackageKey
+	 * @param $controllerName
+	 * @param $actionName
+	 * @return boolean TRUE if we currently have access to the given action
+	 */
+	protected function hasAccessToAction($packageKey, $subpackageKey, $controllerName, $actionName) {
+		$actionControllerObjectName = $this->router->getControllerObjectName($packageKey, $subpackageKey, $controllerName);
+		try {
+			$this->accessDecisionVoterManager->decideOnJoinPoint(
+				new JoinPoint(
+					NULL,
+					$actionControllerObjectName,
+					$actionName . 'Action',
+					array()
+				));
+		} catch(AccessDeniedException $e) {
+			return FALSE;
+		}
+		return TRUE;
+	}
 }
