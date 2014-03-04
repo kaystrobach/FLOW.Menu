@@ -12,7 +12,6 @@ namespace KayStrobach\Menu;
  *                                                                        */
 
 use TYPO3\Flow\Package\Package as BasePackage;
-use TYPO3\Flow\Configuration\ConfigurationManager;
 
 /**
  * The Fluid Package
