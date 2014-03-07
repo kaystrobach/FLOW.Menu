@@ -1,6 +1,6 @@
 <f:if condition="{item.action}">
 	<f:then>
-		<f:link.action action="{item.action}" controller="{item.controller}" package="{item.package}" useParentRequest="1">
+		<f:link.action action="{item.action}" controller="{item.controller}" package="{item.package}" useParentRequest="1" arguments="{item.arguments}">
 			<f:if condition="{item.iconclass}">
 				<span class="{item.iconclass}"></span>
 			</f:if>

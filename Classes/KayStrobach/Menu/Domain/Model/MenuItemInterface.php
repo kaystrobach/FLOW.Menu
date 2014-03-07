@@ -4,8 +4,8 @@ namespace KayStrobach\Menu\Domain\Model;
 
 interface MenuItemInterface {
 	/**
-	 * @param array $item
+	 * @param array $parentItem
 	 * @return array
 	 */
-	public function getItems(array $item);
+	public function getItems(array $parentItem);
 }

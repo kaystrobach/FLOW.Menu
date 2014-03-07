@@ -101,11 +101,14 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 	 */
 	protected function aggregateNodes(&$items) {
 		if(is_array($items)) {
-			foreach($items as $item) {
+			foreach($items as $key => $item) {
 				if(array_key_exists('aggregator', $item)) {
 					$object = $this->objectManager->get($item['aggregator']);
 					if(is_a($object, '\\KayStrobach\\Menu\\Domain\\Model\\MenuItemInterface')) {
-						$item['items'] = $object->getItems();
+						$this->logger->log('Dynamic Menu Config ' . json_encode($item), LOG_DEBUG);
+						$item['items'] = $object->getItems($item);
+						$items[$key]   = $item;
+						$this->logger->log('Dynamic Menu after aggregation ' . json_encode($item), LOG_DEBUG);
 					} else {
 						throw new \Exception('Sry, but "' . get_class($object) . '" is does not implement "\\KayStrobach\\Menu\\Domain\\Model\\MenuItemInterface", this is mandatory for menu aggregators.');
 					}
