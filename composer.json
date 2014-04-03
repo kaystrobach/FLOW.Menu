@@ -5,7 +5,8 @@
 	"version":null,
 	"license": "MIT",
 	"require":{
-		"typo3/flow":"*"
+		"typo3/flow":"*",
+		"typo3/fluid":"*"
 	},
 	"autoload":{
 		"psr-0":{
