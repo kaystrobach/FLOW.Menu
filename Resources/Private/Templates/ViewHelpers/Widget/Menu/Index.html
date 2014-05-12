@@ -1,8 +1,8 @@
-<ul class="nav navbar-nav">
-	<f:for each="{items}" as="item">
+<ul class="nav navbar-nav" id="menu-{config.menu}">
+	<f:for each="{items}" as="item" key="itemKey">
 		<f:if condition="{item.section}">
 			<f:then>
-				<li class="dropdown">
+				<li class="dropdown" id="menu-{config.menu}-{itemKey}">
 					<f:if condition="{item.items}">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<f:if condition="{item.iconclass}">
@@ -19,8 +19,8 @@
 							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu">
-							<f:for each="{item.items}" as="subitem">
-								<li>
+							<f:for each="{item.items}" as="subitem" key="subitemKey">
+								<li id="menu-{config.menu}-{itemKey}-{subitemKey}">
 									<f:render partial="Item" arguments="{item: subitem}"/>
 								</li>
 							</f:for>
@@ -29,15 +29,15 @@
 				</li>
 			</f:then>
 			<f:else>
-				<li>
+				<li id="menu-{config.menu}-{itemKey}">
 					<f:render partial="Item" arguments="{item: item}"/>
 				</li>
 				<f:if condition="{item.items}">
-					<li class="dropdown">
+					<li class="dropdown" id="menu-{config.menu}-{itemKey}-sub">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<f:for each="{item.items}" as="subitem">
-								<li>
+							<f:for each="{item.items}" as="subitem" key="subitemKey">
+								<li id="menu-{config.menu}-{itemKey}-{subitemKey}">
 									<f:render partial="Item" arguments="{item: subitem}"/>
 								</li>
 							</f:for>

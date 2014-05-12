@@ -90,6 +90,7 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 		$this->items = $this->getAllowedNodesAndNonEmptySections($this->items);
 		$this->view->assign('settings', $this->settings);
 		$this->view->assign('items',    $this->items);
+		$this->view->assign('config',   $this->widgetConfiguration);
 		if($this->widgetConfiguration['debug']) {
 			$this->view->assign('debug', print_r($this->debug, TRUE));
 		}
