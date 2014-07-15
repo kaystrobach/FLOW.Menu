@@ -134,6 +134,7 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 			if(array_key_exists('items', $item)) {
 				$subItems = $this->getAllowedNodesAndNonEmptySections($item['items']);
 				if((array_key_exists('section', $item)) && ($item['section'] === 1) && (count($subItems) > 0)) {
+					$item['items'] = $subItems;
 					$thisLevelItems[] = $item;
 				}
 			} elseif (array_key_exists('url', $item)) {
@@ -164,10 +165,11 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 					$actionControllerObjectName,
 					$actionName . 'Action',
 					array()
-				));
+				)
+			);
+			return TRUE;
 		} catch(AccessDeniedException $e) {
 			return FALSE;
 		}
-		return TRUE;
 	}
 }
