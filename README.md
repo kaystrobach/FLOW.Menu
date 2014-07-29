@@ -20,8 +20,6 @@ KayStrobach:
   Menu:
     Menus:
       Development:
-        Configuration:
-          TemplatePathAndFileName:
         Items:
           1000:
             label:      'App'
