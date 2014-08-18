@@ -157,7 +157,7 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 	 * @return boolean TRUE if we currently have access to the given action
 	 */
 	protected function hasAccessToAction($packageKey, $subpackageKey, $controllerName, $actionName) {
-		$actionControllerObjectName = $this->router->getControllerObjectName($packageKey, $subpackageKey, $controllerName);
+		$actionControllerObjectName = $this->getControllerObjectName($packageKey, $subpackageKey, $controllerName);
 		try {
 			$this->accessDecisionVoterManager->decideOnJoinPoint(
 				new JoinPoint(
@@ -171,5 +171,22 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 		} catch(AccessDeniedException $e) {
 			return FALSE;
 		}
+	}
+
+	/**
+	 * @param string $packageKey
+	 * @param string $subPackageKey
+	 * @param string $controllerName
+	 * @return string|null
+	 */
+	protected function getControllerObjectName($packageKey, $subPackageKey, $controllerName) {
+		$possibleObjectName = str_replace('.', '\\', $packageKey) . '\\';
+		if(($subPackageKey !== NULL) && (strlen($subPackageKey) > 0)) {
+			$possibleObjectName .= $subPackageKey . '\\';
+		}
+		$possibleObjectName .= 'Controller\\' . $controllerName . 'Controller';
+
+		$controllerObjectName = $this->objectManager->getCaseSensitiveObjectName($possibleObjectName);
+		return ($controllerObjectName !== FALSE) ? $controllerObjectName : NULL;
 	}
 }
