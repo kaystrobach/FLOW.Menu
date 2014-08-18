@@ -28,12 +28,6 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 
 	/**
 	 * @Flow\Inject
-	 * @var \TYPO3\Flow\Mvc\Routing\RouterInterface
-	 */
-	protected $router;
-
-	/**
-	 * @Flow\Inject
 	 * @var \TYPO3\Flow\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
