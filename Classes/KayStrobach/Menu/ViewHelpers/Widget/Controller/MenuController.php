@@ -134,7 +134,10 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 			} elseif (array_key_exists('url', $item)) {
 				$thisLevelItems[] = $item;
 			} elseif((array_key_exists('package', $item)) && (array_key_exists('controller', $item)) && (array_key_exists('action', $item))) {
-				if($this->hasAccessToAction($item['package'], NULL, $item['controller'], $item['action'])) {
+				if(!isset($item['subpackage'])) {
+					$item['subpackage'] = NULL;
+				}
+				if($this->hasAccessToAction($item['package'], $item['subpackage'], $item['controller'], $item['action'])) {
 					$thisLevelItems[] = $item;
 				}
 			}
