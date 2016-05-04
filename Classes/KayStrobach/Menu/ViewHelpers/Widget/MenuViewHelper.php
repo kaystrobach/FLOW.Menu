@@ -26,9 +26,10 @@ class MenuViewHelper extends \TYPO3\Fluid\Core\Widget\AbstractWidgetViewHelper {
 	 *
 	 * @param string $menu
 	 * @param bool $debug
+	 * @param string $class
 	 * @return string
 	 */
-	public function render($menu = 'Default', $debug=false) {
+	public function render($menu = 'Default', $debug = false, $class = null) {
 		$response = $this->initiateSubRequest();
 		return $response->getContent();
 	}
