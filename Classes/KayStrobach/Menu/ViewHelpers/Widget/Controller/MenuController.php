@@ -4,6 +4,7 @@ namespace KayStrobach\Menu\ViewHelpers\Widget\Controller;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Aop\JoinPoint;
+use TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeSubject;
 use TYPO3\Flow\Security\Exception\AccessDeniedException;
 
 
@@ -22,9 +23,9 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 
 	/**
 	 * @Flow\Inject
-	 * @var \TYPO3\Flow\Security\Authorization\AccessDecisionVoterManager
+	 * @var \TYPO3\Flow\Security\Authorization\PrivilegeManagerInterface
 	 */
-	protected $accessDecisionVoterManager;
+	protected $privilegeManager;
 
 	/**
 	 * @Flow\Inject
@@ -156,15 +157,17 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 	protected function hasAccessToAction($packageKey, $subpackageKey, $controllerName, $actionName) {
 		$actionControllerObjectName = $this->getControllerObjectName($packageKey, $subpackageKey, $controllerName);
 		try {
-			$this->accessDecisionVoterManager->decideOnJoinPoint(
-				new JoinPoint(
-					NULL,
-					$actionControllerObjectName,
-					$actionName . 'Action',
-					array()
+			return $this->privilegeManager->isGranted(
+				'TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilege',
+				new MethodPrivilegeSubject(
+					new JoinPoint(
+							NULL,
+							$actionControllerObjectName,
+							$actionName . 'Action',
+							array()
+					)
 				)
 			);
-			return TRUE;
 		} catch(AccessDeniedException $e) {
 			return FALSE;
 		}

@@ -17,6 +17,7 @@ use		TYPO3\Flow\Annotations as Flow,
 	TYPO3\Flow\Security\Exception\AccessDeniedException,
 	TYPO3\Fluid\Core\ViewHelper\AbstractConditionViewHelper,
 	TYPO3\Flow\Aop\JoinPoint;
+use TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeSubject;
 
 /**
  * This view helper implements an IfAccesOnControllersAction / else condition.
@@ -51,9 +52,9 @@ class IfAccesOnControllersActionViewHelper extends AbstractConditionViewHelper {
 
 	/**
 	 * @Flow\Inject
-	 * @var \TYPO3\Flow\Security\Authorization\AccessDecisionManagerInterface
+	 * @var \TYPO3\Flow\Security\Authorization\PrivilegeManagerInterface
 	 */
-	protected $accessDecisionVoterManager;
+	protected $privilegeManager;
 
 	/**
 	 * @Flow\Inject
@@ -118,18 +119,22 @@ class IfAccesOnControllersActionViewHelper extends AbstractConditionViewHelper {
 	 */
 	protected function hasAccessToAction($packageKey, $subpackageKey, $controllerName, $actionName) {
 		$actionControllerObjectName = $this->router->getControllerObjectName($packageKey, $subpackageKey, $controllerName);
+
 		try {
-			$this->accessDecisionVoterManager->decideOnJoinPoint(
-				new JoinPoint(
-					NULL,
-					$actionControllerObjectName,
-					$actionName . 'Action',
-					array()
-				));
+			return $this->privilegeManager->isGranted(
+					'TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilege',
+					new MethodPrivilegeSubject(
+							new JoinPoint(
+									NULL,
+									$actionControllerObjectName,
+									$actionName . 'Action',
+									array()
+							)
+					)
+			);
 		} catch(AccessDeniedException $e) {
 			return FALSE;
 		}
-		return TRUE;
 	}
 
 }
