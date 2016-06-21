@@ -6,7 +6,14 @@
 			</f:if>
 			<f:if condition="{item.package}">
 				<f:then>
-					<f:translate id="{item.labelId}" package="{item.package}">{item.label}</f:translate>
+					<f:if condition="{item.labelId}">
+						<f:then>
+							<f:translate id="{item.labelId}" package="{item.package}">{item.label}</f:translate>
+						</f:then>
+						<f:else>
+							{item.label}
+						</f:else>
+					</f:if>
 				</f:then>
 				<f:else>
 					{item.label}
@@ -21,7 +28,14 @@
 			</f:if>
 			<f:if condition="{item.package}">
 				<f:then>
-					<f:translate id="{item.labelId}" package="{item.package}">{item.label}</f:translate>
+					<f:if condition="{item.labelId}">
+						<f:then>
+							<f:translate id="{item.labelId}" package="{item.package}">{item.label}</f:translate>
+						</f:then>
+						<f:else>
+							{item.label}
+						</f:else>
+					</f:if>
 				</f:then>
 				<f:else>
 					{item.label}
