@@ -29,7 +29,7 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 
 	/**
 	 * @Flow\Inject
-	 * @var \TYPO3\Flow\Object\ObjectManagerInterface
+	 * @var \TYPO3\Flow\ObjectManagement\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
