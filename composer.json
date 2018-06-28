@@ -1,16 +1,21 @@
 {
-	"name":"kaystrobach/menu",
-	"type":"typo3-flow-package",
-	"description":null,
-	"version":null,
-	"license": "MIT",
-	"require":{
-		"typo3/flow":"*",
-		"typo3/fluid":"*"
-	},
-	"autoload":{
-		"psr-0":{
-			"KayStrobach\\Menu":"Classes"
-		}
-	}
+    "name": "kaystrobach/menu",
+    "type": "typo3-flow-package",
+    "description": null,
+    "version": null,
+    "license": "MIT",
+    "require": {
+        "typo3/flow": "*",
+        "typo3/fluid": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "KayStrobach\\Menu": "Classes"
+        }
+    },
+    "extra": {
+        "applied-flow-migrations": [
+            "TYPO3.FLOW3-201201261636"
+        ]
+    }
 }
