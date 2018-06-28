@@ -2,34 +2,34 @@
 
 namespace KayStrobach\Menu\ViewHelpers\Widget\Controller;
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Aop\JoinPoint;
-use TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeSubject;
-use TYPO3\Flow\Security\Exception\AccessDeniedException;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Aop\JoinPoint;
+use Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeSubject;
+use Neos\Flow\Security\Exception\AccessDeniedException;
 
 
 class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 	/**
-	 * @var \TYPO3\Flow\Log\SystemLoggerInterface
+	 * @var \Neos\Flow\Log\SystemLoggerInterface
 	 * @Flow\Inject
 	 */
 	protected $logger;
 
 	/**
-	 * @var \TYPO3\Flow\Configuration\ConfigurationManager
+	 * @var \Neos\Flow\Configuration\ConfigurationManager
 	 * @FLOW\Inject
 	 */
 	public $configurationManager;
 
 	/**
 	 * @Flow\Inject
-	 * @var \TYPO3\Flow\Security\Authorization\PrivilegeManagerInterface
+	 * @var \Neos\Flow\Security\Authorization\PrivilegeManagerInterface
 	 */
 	protected $privilegeManager;
 
 	/**
 	 * @Flow\Inject
-	 * @var \TYPO3\Flow\ObjectManagement\ObjectManagerInterface
+	 * @var \Neos\Flow\ObjectManagement\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
@@ -158,7 +158,7 @@ class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
 		$actionControllerObjectName = $this->getControllerObjectName($packageKey, $subpackageKey, $controllerName);
 		try {
 			return $this->privilegeManager->isGranted(
-				'TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilege',
+				'Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege',
 				new MethodPrivilegeSubject(
 					new JoinPoint(
 							NULL,

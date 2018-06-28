@@ -12,12 +12,12 @@ namespace KayStrobach\Menu\ViewHelpers\Security;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
-use		TYPO3\Flow\Annotations as Flow,
-	TYPO3\Flow\Security\Authorization\AccessDecisionManagerInterface,
-	TYPO3\Flow\Security\Exception\AccessDeniedException,
+use		Neos\Flow\Annotations as Flow,
+	Neos\Flow\Security\Authorization\AccessDecisionManagerInterface,
+	Neos\Flow\Security\Exception\AccessDeniedException,
 	TYPO3\Fluid\Core\ViewHelper\AbstractConditionViewHelper,
-	TYPO3\Flow\Aop\JoinPoint;
-use TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeSubject;
+	Neos\Flow\Aop\JoinPoint;
+use Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeSubject;
 
 /**
  * This view helper implements an IfAccesOnControllersAction / else condition.
@@ -52,18 +52,18 @@ class IfAccesOnControllersActionViewHelper extends AbstractConditionViewHelper {
 
 	/**
 	 * @Flow\Inject
-	 * @var \TYPO3\Flow\Security\Authorization\PrivilegeManagerInterface
+	 * @var \Neos\Flow\Security\Authorization\PrivilegeManagerInterface
 	 */
 	protected $privilegeManager;
 
 	/**
 	 * @Flow\Inject
-	 * @var \TYPO3\Flow\Mvc\Routing\RouterInterface
+	 * @var \Neos\Flow\Mvc\Routing\RouterInterface
 	 */
 	protected $router;
 
 	/**
-	 * @var \TYPO3\Flow\Mvc\ActionRequest
+	 * @var \Neos\Flow\Mvc\ActionRequest
 	 */
 	protected $request;
 
@@ -122,7 +122,7 @@ class IfAccesOnControllersActionViewHelper extends AbstractConditionViewHelper {
 
 		try {
 			return $this->privilegeManager->isGranted(
-					'TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilege',
+					'Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege',
 					new MethodPrivilegeSubject(
 							new JoinPoint(
 									NULL,
