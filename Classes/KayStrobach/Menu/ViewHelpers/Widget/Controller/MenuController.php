@@ -2,8 +2,10 @@
 
 namespace KayStrobach\Menu\ViewHelpers\Widget\Controller;
 
+use KayStrobach\Menu\Domain\Model\MenuItemInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\JoinPoint;
+use Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege;
 use Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeSubject;
 use Neos\Flow\Security\Exception\AccessDeniedException;
 
@@ -53,7 +55,7 @@ class MenuController extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetContro
 	public function initializeAction() {
 		//@todo move reading into menuitems repository
 		$itemsFromSettings = $this->configurationManager->getConfiguration(
-			\TYPO3\FLOW\Configuration\ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
+			\Neos\Flow\Configuration\ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
 			'KayStrobach.Menu.Menus.' . $this->widgetConfiguration['menu'] . '.Items'
 		);
 		$itemsFromMenus = $this->configurationManager->getConfiguration(
@@ -69,18 +71,21 @@ class MenuController extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetContro
 		}
 
 		$this->settings = $this->configurationManager->getConfiguration(
-			\TYPO3\FLOW\Configuration\ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
+			\Neos\Flow\Configuration\ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
 			'KayStrobach.Menu.Menus.' . $this->widgetConfiguration['menu'] . '.Configuration'
 		);
 		if($this->widgetConfiguration['debug']) {
 			$this->debug = $this->configurationManager->getConfiguration(
-				\TYPO3\FLOW\Configuration\ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
+				\Neos\Flow\Configuration\ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
 				'KayStrobach.Menu.Menus'
 			);
 		}
 	}
 
-	public function indexAction() {
+    /**
+     * @throws \Exception
+     */
+    public function indexAction() {
 		$this->aggregateNodes($this->items);
 		$this->items = $this->getAllowedNodesAndNonEmptySections($this->items);
 		$this->view->assign('settings', $this->settings);
@@ -100,7 +105,7 @@ class MenuController extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetContro
 			foreach($items as $key => $item) {
 				if(array_key_exists('aggregator', $item)) {
 					$object = $this->objectManager->get($item['aggregator']);
-					if(is_a($object, '\\KayStrobach\\Menu\\Domain\\Model\\MenuItemInterface')) {
+					if(is_a($object, MenuItemInterface::class)) {
 						$this->logger->log('Dynamic Menu Config ' . json_encode($item), LOG_DEBUG);
 						$item['items'] = $object->getItems($item);
 						$items[$key]   = $item;
@@ -158,7 +163,7 @@ class MenuController extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetContro
 		$actionControllerObjectName = $this->getControllerObjectName($packageKey, $subpackageKey, $controllerName);
 		try {
 			return $this->privilegeManager->isGranted(
-				'Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege',
+				MethodPrivilege::class,
 				new MethodPrivilegeSubject(
 					new JoinPoint(
 							NULL,

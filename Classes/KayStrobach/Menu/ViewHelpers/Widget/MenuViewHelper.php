@@ -21,14 +21,18 @@ class MenuViewHelper extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetViewHe
 	 */
 	protected $controller;
 
-	/**
-	 * Render this view helper
-	 *
-	 * @param string $menu
-	 * @param bool $debug
-	 * @param string $class
-	 * @return string
-	 */
+    /**
+     * Render this view helper
+     *
+     * @param string $menu
+     * @param bool $debug
+     * @param string $class
+     * @return string
+     * @throws \Neos\Flow\Mvc\Exception\InfiniteLoopException
+     * @throws \Neos\Flow\Mvc\Exception\StopActionException
+     * @throws \Neos\FluidAdaptor\Core\Widget\Exception\InvalidControllerException
+     * @throws \Neos\FluidAdaptor\Core\Widget\Exception\MissingControllerException
+     */
 	public function render($menu = 'Default', $debug = false, $class = null) {
 		$response = $this->initiateSubRequest();
 		return $response->getContent();
