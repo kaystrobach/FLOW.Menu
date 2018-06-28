@@ -8,7 +8,7 @@ use Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeSubject;
 use Neos\Flow\Security\Exception\AccessDeniedException;
 
 
-class MenuController extends \TYPO3\Fluid\Core\Widget\AbstractWidgetController {
+class MenuController extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetController {
 	/**
 	 * @var \Neos\Flow\Log\SystemLoggerInterface
 	 * @Flow\Inject

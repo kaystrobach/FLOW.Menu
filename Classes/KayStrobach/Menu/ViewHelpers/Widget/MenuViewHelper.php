@@ -13,7 +13,7 @@ namespace KayStrobach\Menu\ViewHelpers\Widget;
 
 use Neos\Flow\Annotations as Flow;
 
-class MenuViewHelper extends \TYPO3\Fluid\Core\Widget\AbstractWidgetViewHelper {
+class MenuViewHelper extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetViewHelper {
 
 	/**
 	 * @Flow\Inject

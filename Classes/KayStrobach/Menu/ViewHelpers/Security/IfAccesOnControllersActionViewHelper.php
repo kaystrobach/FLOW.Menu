@@ -3,7 +3,7 @@ namespace KayStrobach\Menu\ViewHelpers\Security;
 
 
 /* *
- * This script belongs to the TYPO3 Flow package "TYPO3.Fluid".           *
+ * This script belongs to the TYPO3 Flow package "Neos.FluidAdaptor".           *
  *                                                                        *
  * It is free software; you can redistribute it and/or modify it under    *
  * the terms of the GNU Lesser General Public License, either version 3   *
@@ -15,7 +15,7 @@ namespace KayStrobach\Menu\ViewHelpers\Security;
 use		Neos\Flow\Annotations as Flow,
 	Neos\Flow\Security\Authorization\AccessDecisionManagerInterface,
 	Neos\Flow\Security\Exception\AccessDeniedException,
-	TYPO3\Fluid\Core\ViewHelper\AbstractConditionViewHelper,
+	Neos\FluidAdaptor\Core\ViewHelper\AbstractConditionViewHelper,
 	Neos\Flow\Aop\JoinPoint;
 use Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeSubject;
 
