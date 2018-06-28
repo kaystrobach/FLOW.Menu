@@ -1,12 +1,11 @@
 {
     "name": "kaystrobach/menu",
-    "type": "typo3-flow-package",
+    "type": "neos-package",
     "description": null,
     "version": null,
     "license": "MIT",
     "require": {
-        "typo3/flow": "*",
-        "typo3/fluid": "*"
+        "neos/flow": "~4.0"
     },
     "autoload": {
         "psr-0": {
