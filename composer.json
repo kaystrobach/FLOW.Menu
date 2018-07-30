@@ -1,8 +1,6 @@
 {
     "name": "kaystrobach/menu",
     "type": "neos-package",
-    "description": null,
-    "version": null,
     "license": "MIT",
     "require": {
         "neos/flow": "~4.0"
