@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9cd8698715b94a94abec16575b2423e1)](https://www.codacy.com/project/github_130/FLOW.Menu/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kaystrobach/FLOW.Menu&amp;utm_campaign=Badge_Grade_Dashboard)
+
 KayStrobach\Menu
 ================
 
