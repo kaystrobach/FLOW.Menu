@@ -38,5 +38,3 @@ class MenuViewHelper extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetViewHe
 		return $response->getContent();
 	}
 }
-
-?>
