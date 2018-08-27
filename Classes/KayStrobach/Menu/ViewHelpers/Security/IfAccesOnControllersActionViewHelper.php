@@ -103,9 +103,8 @@ class IfAccesOnControllersActionViewHelper extends AbstractConditionViewHelper {
 
 		if ($this->hasAccessToAction($package, $subpackage, $controller, $action)) {
 			return $this->renderThenChild();
-		} else {
-			return $this->renderElseChild();
 		}
+		return $this->renderElseChild();
 	}
 
 	/**
@@ -118,7 +117,7 @@ class IfAccesOnControllersActionViewHelper extends AbstractConditionViewHelper {
 	 * @return boolean TRUE if we currently have access to the given action
 	 */
 	protected function hasAccessToAction($packageKey, $subpackageKey, $controllerName, $actionName) {
-		$actionControllerObjectName = $this->router->getControllerObjectName($packageKey, $subpackageKey, $controllerName);
+		$actionControllerName = $this->router->getControllerObjectName($packageKey, $subpackageKey, $controllerName);
 
 		try {
 			return $this->privilegeManager->isGranted(
@@ -126,7 +125,7 @@ class IfAccesOnControllersActionViewHelper extends AbstractConditionViewHelper {
 					new MethodPrivilegeSubject(
 							new JoinPoint(
 									NULL,
-									$actionControllerObjectName,
+									$actionControllerName,
 									$actionName . 'Action',
 									array()
 							)
