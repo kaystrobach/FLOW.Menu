@@ -62,12 +62,13 @@ class MenuController extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetContro
 			'Menus',
 			'KayStrobach.Menu.Menus.' . $this->widgetConfiguration['menu'] . '.Items'
 		);
+		
+		// @todo optimize merging
+		$this->items = $itemsFromSettings;
 		if(is_array($itemsFromMenus) && is_array($itemsFromSettings)) {
 			$this->items = array_merge_recursive($itemsFromSettings, $itemsFromMenus);
 		} elseif(is_array($itemsFromMenus)) {
 			$this->items = $itemsFromMenus;
-		} else {
-			$this->items = $itemsFromSettings;
 		}
 
 		$this->settings = $this->configurationManager->getConfiguration(
@@ -160,14 +161,14 @@ class MenuController extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetContro
 	 * @return boolean TRUE if we currently have access to the given action
 	 */
 	protected function hasAccessToAction($packageKey, $subpackageKey, $controllerName, $actionName) {
-		$actionControllerObjectName = $this->getControllerObjectName($packageKey, $subpackageKey, $controllerName);
+		$actionControllerName = $this->getControllerObjectName($packageKey, $subpackageKey, $controllerName);
 		try {
 			return $this->privilegeManager->isGranted(
 				MethodPrivilege::class,
 				new MethodPrivilegeSubject(
 					new JoinPoint(
 							NULL,
-							$actionControllerObjectName,
+							$actionControllerName,
 							$actionName . 'Action',
 							array()
 					)
