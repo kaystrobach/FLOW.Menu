@@ -6,8 +6,8 @@
         "neos/flow": "~4.0"
     },
     "autoload": {
-        "psr-0": {
-            "KayStrobach\\Menu": "Classes"
+        "psr-4": {
+            "KayStrobach\\Menu\\": "Classes"
         }
     },
     "extra": {

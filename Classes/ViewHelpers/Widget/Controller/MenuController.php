@@ -132,6 +132,9 @@ class MenuController extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetContro
 	protected function getAllowedNodesAndNonEmptySections($items) {
 		$thisLevelItems = array();
 		foreach($items as $item) {
+		    if (array_key_exists('privilegeTarget', $item) && !$this->hasAccessToPriviledgeTarget($item['privilegeTarget'])) {
+                continue;
+            }
 			if(array_key_exists('items', $item)) {
 				$subItems = $this->getAllowedNodesAndNonEmptySections($item['items']);
 				if((array_key_exists('section', $item)) && ($item['section'] === 1) && (count($subItems) > 0)) {
@@ -178,6 +181,17 @@ class MenuController extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetContro
 			return FALSE;
 		}
 	}
+
+	protected function hasAccessToPriviledgeTarget($target)
+    {
+        try {
+            return $this->privilegeManager->isPrivilegeTargetGranted(
+                $target
+            );
+        } catch (AccessDeniedException $exception) {
+            return false;
+        }
+    }
 
 	/**
 	 * @param string $packageKey
