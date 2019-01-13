@@ -143,15 +143,15 @@ class MenuController extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetContro
             }
             if (array_key_exists('items', $item)) {
                 $subItems = $this->getAllowedNodesAndNonEmptySections($item['items']);
-                if ((array_key_exists('section', $item)) && ($item['section'] === 1) && (count($subItems) > 0)) {
+                if (array_key_exists('section', $item) && ($item['section'] === 1) && (count($subItems) > 0)) {
                     $item['items'] = $subItems;
                     $thisLevelItems[] = $item;
                 }
             } elseif (array_key_exists('url', $item)) {
                 $thisLevelItems[] = $item;
-            } elseif ((array_key_exists('package', $item)) && (array_key_exists('controller', $item)) && (array_key_exists('action', $item))) {
+            } elseif(array_key_exists('package', $item) && array_key_exists('controller', $item) && array_key_exists('action', $item)) {
                 if (!isset($item['subpackage'])) {
-                    $item['subpackage'] = NULL;
+                    $item['subpackage'] = null;
                 }
                 if ($this->hasAccessToAction($item['package'], $item['subpackage'], $item['controller'], $item['action'])) {
                     $thisLevelItems[] = $item;
