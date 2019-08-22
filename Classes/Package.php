@@ -35,7 +35,11 @@ class Package extends BasePackage {
 		$dispatcher = $bootstrap->getSignalSlotDispatcher();
 		$dispatcher->connect('Neos\Flow\Configuration\ConfigurationManager', 'configurationManagerReady',
 			function ($configurationManager) {
-				$configurationManager->registerConfigurationType('Menus');
+				$configurationManager->registerConfigurationType(
+					'Menus',
+					ConfigurationManager::CONFIGURATION_PROCESSING_TYPE_DEFAULT,
+                    true
+				);
 			}
 		);
 	}
