@@ -11,6 +11,7 @@ namespace KayStrobach\Menu;
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 
+use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Package\Package as BasePackage;
 
 /**
@@ -33,7 +34,7 @@ class Package extends BasePackage {
 	public function boot(\Neos\Flow\Core\Bootstrap $bootstrap) {
 		//register Configuration Type Menu
 		$dispatcher = $bootstrap->getSignalSlotDispatcher();
-		$dispatcher->connect('Neos\Flow\Configuration\ConfigurationManager', 'configurationManagerReady',
+		$dispatcher->connect(ConfigurationManager::class, 'configurationManagerReady',
 			function ($configurationManager) {
 				$configurationManager->registerConfigurationType(
 					'Menus',
@@ -44,5 +45,3 @@ class Package extends BasePackage {
 		);
 	}
 }
-
-?>
