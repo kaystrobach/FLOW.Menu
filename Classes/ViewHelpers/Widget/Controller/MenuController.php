@@ -75,7 +75,7 @@ class MenuController extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetContro
         }
 
         $this->settings = $this->configurationManager->getConfiguration(
-            \Neos\Flow\Configuration\ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
+            'Menus',
             'KayStrobach.Menu.Menus.' . $this->widgetConfiguration['menu'] . '.Configuration'
         );
         if ($this->widgetConfiguration['debug']) {
