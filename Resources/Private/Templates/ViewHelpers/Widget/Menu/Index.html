@@ -3,9 +3,18 @@
     Partials/ViewHelpers/Widget/Items.html -> replaceable with partial option
     Partials/ViewHelpers/Widget/Item.html
 </f:comment>
-<ul class="{f:if(condition:'{config.class}',then:'{config.class}',else:'nav navbar-nav')}" id="menu-{config.menu}">
-    <f:render partial="ViewHelpers/Widget/Items" arguments="{_all}" />
-</ul>
+
+<f:if condition="{settings.Partial}">
+    <f:then>
+        <f:render partial="{settings.Partial}" arguments="{_all}" />
+    </f:then>
+    <f:else>
+        <ul class="{f:if(condition:'{config.class}',then:'{config.class}',else:'nav navbar-nav')}" id="menu-{config.menu}">
+            <f:render partial="ViewHelpers/Widget/Items" arguments="{_all}" />
+        </ul>
+    </f:else>
+</f:if>
+
 <f:if condition="{debug}">
 <!--
 {debug}
