@@ -123,10 +123,11 @@ class MenuController extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetContro
                 if (array_key_exists('items', $item)) {
                     $this->aggregateNodes($item['items']);
                 }
+                $item['arguments'] = $item['arguments'] ?? [];
             }
             ksort($items);
         } else {
-            $items = array();
+            $items = [];
         }
     }
 

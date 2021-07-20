@@ -21,6 +21,14 @@ class MenuViewHelper extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetViewHe
 	 */
 	protected $controller;
 
+    public function initializeArguments()
+    {
+        parent::initializeArguments();
+        $this->registerArgument('menu', 'string', 'MenuIdentifier', 0, 'Default');
+        $this->registerArgument('debug', 'boolean', 'Debug or not', 0, false);
+        $this->registerArgument('class', 'string', 'additional class', 0, null);
+    }
+
     /**
      * Render this view helper
      *
@@ -33,8 +41,11 @@ class MenuViewHelper extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetViewHe
      * @throws \Neos\FluidAdaptor\Core\Widget\Exception\InvalidControllerException
      * @throws \Neos\FluidAdaptor\Core\Widget\Exception\MissingControllerException
      */
-	public function render($menu = 'Default', $debug = false, $class = null) {
+	public function render() {
 		$response = $this->initiateSubRequest();
+		if (is_string($response)) {
+		    return $response;
+        }
 		return $response->getContent();
 	}
 }
