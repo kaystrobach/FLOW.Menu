@@ -123,7 +123,6 @@ class MenuController extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetContro
                 if (array_key_exists('items', $item)) {
                     $this->aggregateNodes($item['items']);
                 }
-                $item['arguments'] = $item['arguments'] ?? [];
             }
             ksort($items);
         } else {
@@ -139,6 +138,7 @@ class MenuController extends \Neos\FluidAdaptor\Core\Widget\AbstractWidgetContro
     {
         $thisLevelItems = array();
         foreach ($items as $item) {
+            $item['arguments'] = $item['arguments'] ?? [];
             if (array_key_exists('privilegeTarget', $item) && !$this->hasAccessToPriviledgeTarget($item['privilegeTarget'])) {
                 continue;
             }
